@@ -1,7 +1,36 @@
+import { addDoc, collection } from 'firebase/firestore';
+import { useState } from 'react';
 import { Button, Col, Form, FormControl, Row, Stack } from 'react-bootstrap'
-import { Link } from 'react-router-dom';
 import CreatableSelect from 'react-select/creatable';
+import { db, auth } from './Firebase';
+import { Link, useNavigate } from 'react-router-dom';
+
 const Newforms = () => {
+    const Navigate = useNavigate();
+    const [title, setTitle] = useState('');
+    const [tags, setTags] = useState<{ label: string, value: string }[]>([])
+    const [desc, setDesc] = useState('');
+    const postCollectionRef = collection(db, "Notes");
+
+    const handleTagsChange = (newval: any) => {
+        setTags(newval)
+    }
+    const createNote = async (e: any) => {
+        e.preventDefault();
+        const tagStrings = tags.map((tag) => tag.value);
+        await addDoc(postCollectionRef, {
+            title,
+            desc,
+            tags: tagStrings,
+            author: { name: auth.currentUser?.displayName, id: auth.currentUser?.uid }
+        });
+        setTitle('');
+        setDesc('');
+        setTags([])
+        Navigate('/main')
+
+    }
+
     return (
         <Form>
             <Stack gap={3}>
@@ -9,25 +38,26 @@ const Newforms = () => {
                     <Col>
                         <Form.Group controlId="title">
                             <Form.Label>Title</Form.Label>
-                            <FormControl required />
+                            <FormControl value={title} onChange={(e) => setTitle(e.target.value)} required />
 
                         </Form.Group>
                     </Col>
                     <Col>
                         <Form.Group controlId="tags">
                             <Form.Label>Tags</Form.Label>
-                            <CreatableSelect isMulti />
+
+                            <CreatableSelect value={tags} onChange={handleTagsChange} isMulti />
 
                         </Form.Group>
                     </Col>
                 </Row>
                 <Form.Group controlId="markdown">
                     <Form.Label>Note Down Here</Form.Label>
-                    <FormControl required as="textarea" rows={5} />
+                    <FormControl value={desc} onChange={(e) => setDesc(e.target.value)} required as="textarea" rows={5} />
 
                 </Form.Group>
                 <Stack direction='horizontal' gap={2}>
-                    <Button type='submit' variant='primary'>Save</Button>
+                    <Button onClick={createNote} type='submit' variant='primary'>Save</Button>
                     <Link to="..">
                         <Button type='button' variant='outline-secondary'>Cancel</Button>
                     </Link>
