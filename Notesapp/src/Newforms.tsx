@@ -59,7 +59,7 @@ const Newforms = () => {
                 </Form.Group>
                 <Stack direction='horizontal' gap={2}>
                     <button onClick={createNote} className="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300">Save</button>
-                    
+
                     <Link to="..">
                         <Button type='button' variant='outline-secondary'>Cancel</Button>
                     </Link>

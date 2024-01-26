@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import { auth, provider } from './Firebase';
 import { signInWithPopup } from 'firebase/auth';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import React from 'react';
 type loginProps = {
     setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;

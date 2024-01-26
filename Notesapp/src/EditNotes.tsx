@@ -3,40 +3,45 @@ import CreatableSelect from 'react-select/creatable';
 import { Button, Col, Form, FormControl, Row, Stack } from 'react-bootstrap'
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { getDocs, collection, query, where } from 'firebase/firestore';
+import { getDocs, collection } from 'firebase/firestore';
 import { db, auth } from './Firebase';
+
 const EditNotes = () => {
     type ParamsType = {
         id: any;
+        title: string;
+        desc: string
     };
+    
     const Navigate = useNavigate();
-    const [title, setTitle] = useState('');
-    const [tags, setTags] = useState<{ label: string, value: string }[]>([])
+    const [title, setTitle] = useState("");
     const [desc, setDesc] = useState('');
 
     const param_id = useParams<ParamsType>();
-    const ide: string | number = param_id.id;
-    console.log(ide)
+    const ide = param_id.id;
+
 
     const id = auth.currentUser?.uid;
 
+    const postCollectionRef = collection(db, `${id}`);
     useEffect(() => {
-        if (id && param_id) {
-            const postCollectionRef = collection(db, id);
-            const q = query(postCollectionRef, where(id, '==', ide));
-            const getNotes = async () => {
-                try {
-                    const data = await getDocs(q);
-                    console.log('Fetched documents:', data.docs);
-                    const newdata = data.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-                    console.log(newdata);
-                } catch (error) {
-                    console.error('Error fetching notes:', error);
-                }
-            };
-            getNotes();
+        const getNotes = async () => {
+            const data = await getDocs(postCollectionRef);
+            const newdata = data.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+            const values = newdata[Number(ide)];
+            console.log(values);
+
+
+            if (values && 'title' in values) {
+                setTitle(values.title as string);
+            }
+            if (values && 'desc' in values) {
+                setDesc(values.desc as string);
+            }
+
         }
-    }, [id, param_id])
+        getNotes()
+    }, [param_id])
 
 
     return (
@@ -67,14 +72,7 @@ const EditNotes = () => {
 
                             </Form.Group>
                         </Col>
-                        <Col>
-                            <Form.Group controlId="tags">
-                                <Form.Label>Tags</Form.Label>
 
-                                <CreatableSelect value={tags} isMulti />
-
-                            </Form.Group>
-                        </Col>
                     </Row>
                     <Form.Group controlId="markdown">
                         <Form.Label>Note Down Here</Form.Label>

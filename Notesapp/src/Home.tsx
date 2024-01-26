@@ -26,7 +26,7 @@ const Home = () => {
         }
         getNotes()
     }, [notes])
-    const handleCardClick = (id:any) => {
+    const handleCardClick = (id:number) => {
         Navigate(`/${id}/edit`)
     };
     return (
