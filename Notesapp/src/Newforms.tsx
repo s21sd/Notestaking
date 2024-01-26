@@ -10,7 +10,8 @@ const Newforms = () => {
     const [title, setTitle] = useState('');
     const [tags, setTags] = useState<{ label: string, value: string }[]>([])
     const [desc, setDesc] = useState('');
-    const postCollectionRef = collection(db, "Notes");
+    const id = auth.currentUser?.uid;
+    const postCollectionRef = collection(db, `${id}`);
 
     const handleTagsChange = (newval: any) => {
         setTags(newval)
@@ -57,7 +58,8 @@ const Newforms = () => {
 
                 </Form.Group>
                 <Stack direction='horizontal' gap={2}>
-                    <Button onClick={createNote} type='submit' variant='primary'>Save</Button>
+                    <button onClick={createNote} className="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300">Save</button>
+                    
                     <Link to="..">
                         <Button type='button' variant='outline-secondary'>Cancel</Button>
                     </Link>

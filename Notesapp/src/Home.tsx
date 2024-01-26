@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 import ReactSelect from "react-select"
 import { useEffect, useState } from 'react';
 import { getDocs, collection } from 'firebase/firestore';
-import { db } from './Firebase';
+import { db, auth } from './Firebase';
 
 type notestype = {
     title: string;
@@ -16,7 +16,8 @@ const Home = () => {
     const Navigate = useNavigate();
 
     const [notes, setNotesList] = useState<notestype[]>([])
-    const postCollectionRef = collection(db, "Notes");
+    const id = auth.currentUser?.uid;
+    const postCollectionRef = collection(db, `${id}`);
     useEffect(() => {
         const getNotes = async () => {
             const data = await getDocs(postCollectionRef);
@@ -24,9 +25,9 @@ const Home = () => {
             setNotesList(newdata)
         }
         getNotes()
-    }, [])
-    const handleCardClick = () => {
-        Navigate('/:id/edit')
+    }, [notes])
+    const handleCardClick = (id:any) => {
+        Navigate(`/${id}/edit`)
     };
     return (
         <div>
@@ -38,7 +39,7 @@ const Home = () => {
                 <Col xs="auto">
                     <Stack gap={2} direction="horizontal">
                         <Link to="/new">
-                            <Button variant="primary">Create</Button>
+                            <button className="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300">Create</button>
                         </Link>
                         <Button
                             variant="outline-secondary"
@@ -69,11 +70,11 @@ const Home = () => {
                 </Row>
             </Form>
 
-            <div className='flex flex-wrap' onClick={handleCardClick}>
+            <div className='flex flex-wrap'>
                 {
                     notes.map((item, index) => {
                         return (
-                            <div key={index} className="text-gray-600 body-font">
+                            <div key={index} onClick={() => handleCardClick(index)} className="text-gray-600 body-font">
                                 <div className="container mx-auto">
 
                                     <div className="flex flex-wrap ">
