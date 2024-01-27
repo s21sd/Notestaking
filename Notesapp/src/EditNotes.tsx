@@ -76,14 +76,13 @@ const EditNotes = () => {
         <div>
             <Row className="align-items-center mb-4">
                 <Col>
-                    <p>CSS: Selectors </p>
+                    <p>{title}</p>
                 </Col>
                 <Col xs="auto">
                     <Stack gap={2} direction="horizontal">
                         <Link to="/new">
                             <button className="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300">Edit</button>
                         </Link>
-                        <button className="rounded-lg px-4 py-2 bg-red-600 text-red-100 hover:bg-red-700 duration-300">Delete</button>
                         <Link to="/main">
                             <button className="rounded-lg px-4 py-2 bg-gray-900 text-gray-100">Back</button>
                         </Link>
@@ -109,7 +108,7 @@ const EditNotes = () => {
                     </Form.Group>
                     <Stack direction='horizontal' gap={2}>
                         <button onClick={updateNote} className="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300">Update</button>
-                        <Link to="..">
+                        <Link to="/main">
                             <Button type='button' variant='outline-secondary'>Cancel</Button>
                         </Link>
                     </Stack>

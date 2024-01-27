@@ -3,7 +3,7 @@ import Newforms from "./Newforms"
 const NewNotes = () => {
     return (
         <>
-            <h1 className="mb-4">New Notes</h1>
+            <h1 className="mb-4 font-bold text-[#fc6d0b]">New Notes</h1>
             <Newforms />
         </>
     )

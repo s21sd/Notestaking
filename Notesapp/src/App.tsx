@@ -10,17 +10,14 @@ import { useState } from 'react';
 function App() {
   const [isAuth, setIsAuth] = useState(false);
   return (
-    <Container className='my-4'>
-
+    <Container className='my-4 '>
       <Routes>
-        <Route path='/' element={<Landing setIsAuth={setIsAuth} />} />
+        <Route path='/' element={<Landing isAuth={isAuth} setIsAuth={setIsAuth} />} />
         <Route path='/main' element={<Home />} />
         <Route path='/new' element={<NewNotes />} />
         <Route path='/:id'>
-          <Route index element={<h1>show</h1>} />
           <Route path='edit' element={<EditNotes />} />
         </Route>
-
         <Route path='*' element={<Navigate to='/' />} />
       </Routes>
     </Container>

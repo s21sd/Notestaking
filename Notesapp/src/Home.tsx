@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Link, useNavigate } from 'react-router-dom';
 import { Col, Form, Row, Stack } from 'react-bootstrap'
 import Card from 'react-bootstrap/Card';
@@ -32,35 +32,25 @@ const Home = () => {
     const handleCardClick = (id: number) => {
         Navigate(`/${id}/edit`)
     };
-    const handleDelteNote = async (id: number) => {
-        try {
-            const data = await getDocs(postCollectionRef);
-            const newdata = data.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-            console.log(newdata)
-            const values = newdata.find((item) => item.id === id.toString());
-            // console.log(values?.id)
-            if (values) {
-                const noteRef = doc(db, `${id}`, values.id);
-                await deleteDoc(noteRef);
-                console.log('Note deleted successfully!');
-            } else {
-                console.error('Note not found.');
-            }
-        } catch (error) {
-            console.error('Error deleting note:', error);
-        }
+    const handleDelteNote = async (index: number) => {
+        const data = await getDocs(postCollectionRef);
+        const newdata = data.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        const values = newdata[index];
+        const noteRef = doc(db, `${id}`, values.id);
+        await deleteDoc(noteRef);
+        console.log('Note deleted successfully!');
     }
     return (
-        <div>
+        <div className=''>
 
             <Row className="align-items-center mb-4">
                 <Col>
-                    <h1>Notes</h1>
+                    <h1 className='font-bold text-[#fc6d0b]'>NoteSwift</h1>
                 </Col>
                 <Col xs="auto">
                     <Stack gap={2} direction="horizontal">
                         <Link to="/new">
-                            <button className="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300">Create</button>
+                            <button className="rounded-lg px-4 py-2 bg-[#ec8947] text-white hover:bg-[#ec8947]">Create</button>
                         </Link>
 
                     </Stack>
@@ -70,7 +60,7 @@ const Home = () => {
                 <Row className="mb-4">
                     <Col>
                         <Form.Group controlId="title">
-                            <Form.Label>Title</Form.Label>
+                            <Form.Label className='text-[#fc6d0b]'>Title:</Form.Label>
                             <Form.Control
                                 type="text"
 
@@ -79,7 +69,7 @@ const Home = () => {
                     </Col>
                     <Col>
                         <Form.Group controlId="tags">
-                            <Form.Label>Tags</Form.Label>
+                            <Form.Label className='text-[#fc6d0b]'>Tags:</Form.Label>
                             <ReactSelect isMulti
                             />
                         </Form.Group>
@@ -96,7 +86,7 @@ const Home = () => {
 
                                     <div className="flex flex-wrap ">
                                         <div className="p-4  w-full">
-                                            <div className="h-full bg-gray-100 p-8 rounded">
+                                            <div className="h-full bg-gray-100 p-8 rounded max-w-sm">
                                                 <div className='flex justify-between items-center mb-4'>
 
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="block w-5 h-5 text-gray-400 " viewBox="0 0 975.036 975.036">
@@ -111,10 +101,13 @@ const Home = () => {
                                                         }} onClick={() => handleDelteNote(index)} />
                                                     </div>
                                                 </div>
-                                                <p className="leading-relaxed mb-6">{item.desc} </p>
+                                                <p className="leading-relaxed mb-6 font-bold text-gray-900">{item.title} </p>
                                                 <a className="inline-flex items-center">
                                                     <span className="flex-grow flex flex-col ">
-                                                        <span className="title-font font-medium text-gray-900">{item.title}</span>
+                                                        <div className="title-font font-medium text-gray-700" style={{ maxHeight: '100px', overflowY: 'auto' }}>
+                                                            {item.desc}
+                                                        </div>
+
                                                         <span className="text-gray-500 text-sm flex">
                                                             {
                                                                 item.tags.map((e: any, i: number) => {

@@ -38,14 +38,14 @@ const Newforms = () => {
                 <Row>
                     <Col>
                         <Form.Group controlId="title">
-                            <Form.Label>Title</Form.Label>
+                            <Form.Label className='text-[#fc6d0b]'>Title:</Form.Label>
                             <FormControl value={title} onChange={(e) => setTitle(e.target.value)} required />
 
                         </Form.Group>
                     </Col>
                     <Col>
                         <Form.Group controlId="tags">
-                            <Form.Label>Tags</Form.Label>
+                            <Form.Label className='text-[#fc6d0b]'>Tags:</Form.Label>
 
                             <CreatableSelect value={tags} onChange={handleTagsChange} isMulti />
 
@@ -53,12 +53,12 @@ const Newforms = () => {
                     </Col>
                 </Row>
                 <Form.Group controlId="markdown">
-                    <Form.Label>Note Down Here</Form.Label>
+                    <Form.Label className='text-[#fc6d0b]'>Note Down Here...</Form.Label>
                     <FormControl value={desc} onChange={(e) => setDesc(e.target.value)} required as="textarea" rows={5} />
 
                 </Form.Group>
                 <Stack direction='horizontal' gap={2}>
-                    <button onClick={createNote} className="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300">Save</button>
+                    <button onClick={createNote} className="rounded-lg px-4 py-2 bg-[#ec8947]  hover:bg-[#fc6d0b] text-white  duration-300">Save</button>
 
                     <Link to="..">
                         <Button type='button' variant='outline-secondary'>Cancel</Button>
