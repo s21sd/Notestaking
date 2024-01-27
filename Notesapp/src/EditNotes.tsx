@@ -1,9 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
-import CreatableSelect from 'react-select/creatable';
 import { Button, Col, Form, FormControl, Row, Stack } from 'react-bootstrap'
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { getDocs, collection } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { getDocs, collection, updateDoc, doc} from 'firebase/firestore';
 import { db, auth } from './Firebase';
 
 const EditNotes = () => {
@@ -12,15 +11,18 @@ const EditNotes = () => {
         title: string;
         desc: string
     };
-    
+    type newUpdateType = {
+        title?: string;
+        desc?: string;
+    }
+
     const Navigate = useNavigate();
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState('');
+    const [noteid, setNoteID] = useState('');
 
     const param_id = useParams<ParamsType>();
     const ide = param_id.id;
-
-
     const id = auth.currentUser?.uid;
 
     const postCollectionRef = collection(db, `${id}`);
@@ -28,10 +30,10 @@ const EditNotes = () => {
         const getNotes = async () => {
             const data = await getDocs(postCollectionRef);
             const newdata = data.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+            console.log(newdata);
             const values = newdata[Number(ide)];
-            console.log(values);
-
-
+            let docId = values.id;
+            setNoteID(docId);
             if (values && 'title' in values) {
                 setTitle(values.title as string);
             }
@@ -43,6 +45,32 @@ const EditNotes = () => {
         getNotes()
     }, [param_id])
 
+
+    const handleUpdateNotes = async (updatedData: newUpdateType) => {
+        const noteRef = doc(db, `${id}`, noteid);
+
+        try {
+            await updateDoc(noteRef, updatedData);
+            console.log('Note updated successfully!');
+        } catch (error) {
+            console.error('Error updating note:', error);
+        }
+    };
+
+    const updateNote = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const updatedData: newUpdateType = {};
+
+        if (title) updatedData.title = title;
+        if (desc) updatedData.desc = desc;
+
+        try {
+            await handleUpdateNotes(updatedData);
+            Navigate('/main')
+        } catch (error) {
+            console.error('Error updating note:', error);
+        }
+    };
 
     return (
         <div>
@@ -56,7 +84,7 @@ const EditNotes = () => {
                             <button className="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300">Edit</button>
                         </Link>
                         <button className="rounded-lg px-4 py-2 bg-red-600 text-red-100 hover:bg-red-700 duration-300">Delete</button>
-                        <Link to="/">
+                        <Link to="/main">
                             <button className="rounded-lg px-4 py-2 bg-gray-900 text-gray-100">Back</button>
                         </Link>
                     </Stack>
@@ -80,7 +108,7 @@ const EditNotes = () => {
 
                     </Form.Group>
                     <Stack direction='horizontal' gap={2}>
-                        <button className="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300">Update</button>
+                        <button onClick={updateNote} className="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300">Update</button>
                         <Link to="..">
                             <Button type='button' variant='outline-secondary'>Cancel</Button>
                         </Link>
