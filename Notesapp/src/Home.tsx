@@ -1,8 +1,6 @@
-
 import { Link, useNavigate } from 'react-router-dom';
 import { Col, Form, Row, Stack } from 'react-bootstrap'
 import Card from 'react-bootstrap/Card';
-import ReactSelect from "react-select"
 import { useEffect, useState } from 'react';
 import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore';
 import { db, auth } from './Firebase';
