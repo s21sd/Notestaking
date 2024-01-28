@@ -1,6 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Col, Form, Row, Stack } from 'react-bootstrap'
-import Card from 'react-bootstrap/Card';
 import { useEffect, useState } from 'react';
 import { getDocs, collection, doc, deleteDoc } from 'firebase/firestore';
 import { db, auth } from './Firebase';
@@ -11,7 +10,6 @@ type notestype = {
     title: string;
     id: string;
     desc: string;
-    tags: any;
 }
 const Home = () => {
     const Navigate = useNavigate();
@@ -126,17 +124,7 @@ const Home = () => {
                                                                 {item.desc}
                                                             </div>
 
-                                                            <span className="text-white text-sm flex">
-                                                                {
-                                                                    item.tags.map((e: any, i: number) => {
-                                                                        return (
-                                                                            <Card.Text key={i} className=' font-bold p-2 shadow-lg rounded-full m-2 flex bg-gray-700'>
-                                                                                {e}
-                                                                            </Card.Text>
-                                                                        )
-                                                                    })
-                                                                }
-                                                            </span>
+                                                           
                                                         </span>
                                                     </a>
                                                 </div>
@@ -181,17 +169,7 @@ const Home = () => {
                                                                     {item.desc}
                                                                 </div>
 
-                                                                <span className="text-white text-sm flex">
-                                                                    {
-                                                                        item.tags.map((e: any, i: number) => {
-                                                                            return (
-                                                                                <Card.Text key={i} className=' font-bold p-2 shadow-lg rounded-full m-2 flex bg-gray-700'>
-                                                                                    {e}
-                                                                                </Card.Text>
-                                                                            )
-                                                                        })
-                                                                    }
-                                                                </span>
+                                                                
                                                             </span>
                                                         </a>
                                                     </div>
