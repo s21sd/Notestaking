@@ -1,24 +1,33 @@
 import { addDoc, collection } from 'firebase/firestore';
 import { useState } from 'react';
 import { Button, Col, Form, FormControl, Row, Stack } from 'react-bootstrap'
+import CreatableSelect from 'react-select/creatable';
 import { db, auth } from './Firebase';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Newforms = () => {
     const Navigate = useNavigate();
     const [title, setTitle] = useState('');
+    const [tags, setTags] = useState<{ label: string, value: string }[]>([])
     const [desc, setDesc] = useState('');
     const id = auth.currentUser?.uid;
     const postCollectionRef = collection(db, `${id}`);
+
+    const handleTagsChange = (newval: any) => {
+        setTags(newval)
+    }
     const createNote = async (e: any) => {
         e.preventDefault();
+        const tagStrings = tags.map((tag) => tag.value);
         await addDoc(postCollectionRef, {
             title,
             desc,
+            tags: tagStrings,
             author: { name: auth.currentUser?.displayName, id: auth.currentUser?.uid }
         });
         setTitle('');
         setDesc('');
+        setTags([])
         Navigate('/main')
 
     }
@@ -31,6 +40,14 @@ const Newforms = () => {
                         <Form.Group controlId="title">
                             <Form.Label className='text-[#fc6d0b]'>Title:</Form.Label>
                             <FormControl value={title} onChange={(e) => setTitle(e.target.value)} required />
+
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Group controlId="tags">
+                            <Form.Label className='text-[#fc6d0b]'>Tags:</Form.Label>
+
+                            <CreatableSelect value={tags} onChange={handleTagsChange} isMulti />
 
                         </Form.Group>
                     </Col>
