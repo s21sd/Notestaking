@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button, Col, Form, FormControl, Row, Stack } from 'react-bootstrap'
 import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { getDocs, collection, updateDoc, doc} from 'firebase/firestore';
+import { getDocs, collection, updateDoc, doc } from 'firebase/firestore';
 import { db, auth } from './Firebase';
 
 const EditNotes = () => {
@@ -74,17 +74,17 @@ const EditNotes = () => {
 
     return (
         <div>
-            <Row className="align-items-center mb-4">
+            <Row className="align-items-center mb-4 ">
                 <Col>
-                    <p>{title}</p>
+                    <p className='text-[#fc6d0b] font-bold'>{title}</p>
                 </Col>
                 <Col xs="auto">
                     <Stack gap={2} direction="horizontal">
                         <Link to="/new">
-                            <button className="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300">Edit</button>
+                            <button className="rounded-lg px-4 py-2 bg-[#ec8947] text-white hover:bg-[#fc6d0b] duration-300">Edit</button>
                         </Link>
                         <Link to="/main">
-                            <button className="rounded-lg px-4 py-2 bg-gray-900 text-gray-100">Back</button>
+                            <Button className='bg-gray-900 text-gray-100 border-none px-3 py-2' type='button' variant='outline-secondary'>Back</Button>
                         </Link>
                     </Stack>
                 </Col>
@@ -94,7 +94,7 @@ const EditNotes = () => {
                     <Row>
                         <Col>
                             <Form.Group controlId="title">
-                                <Form.Label>Title</Form.Label>
+                                <Form.Label className='text-[#fc6d0b]'>Title:</Form.Label>
                                 <FormControl value={title} onChange={(e) => setTitle(e.target.value)} required />
 
                             </Form.Group>
@@ -102,14 +102,14 @@ const EditNotes = () => {
 
                     </Row>
                     <Form.Group controlId="markdown">
-                        <Form.Label>Note Down Here</Form.Label>
+                        <Form.Label className='text-[#fc6d0b]'>Note Down Here...</Form.Label>
                         <FormControl value={desc} onChange={(e) => setDesc(e.target.value)} required as="textarea" rows={5} />
 
                     </Form.Group>
                     <Stack direction='horizontal' gap={2}>
-                        <button onClick={updateNote} className="rounded-lg px-4 py-2 bg-blue-500 text-blue-100 hover:bg-blue-600 duration-300">Update</button>
+                        <button onClick={updateNote} className="rounded-lg px-4 py-2 bg-[#ec8947] text-white hover:bg-[#fc6d0b] duration-300">Update</button>
                         <Link to="/main">
-                            <Button type='button' variant='outline-secondary'>Cancel</Button>
+                            <Button className='bg-gray-900 text-gray-100 border-none' type='button' variant='outline-secondary'>Cancel</Button>
                         </Link>
                     </Stack>
                 </Stack>
