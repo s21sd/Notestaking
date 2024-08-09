@@ -4,12 +4,12 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDVrM2E3QmlmfvOFncHOgHNNALwRfzrdNA",
-    authDomain: "notesapp-f1792.firebaseapp.com",
-    projectId: "notesapp-f1792",
-    storageBucket: "notesapp-f1792.appspot.com",
-    messagingSenderId: "852179649541",
-    appId: "1:852179649541:web:92ff1e40845e10186b886c"
+    apiKey: "",
+    authDomain: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: ""
 };
 
 // Initialize Firebase
